@@ -17,6 +17,8 @@ function ensureAuthenticated(request, response, next) {
         request.user = {
             id: String(user_id)
         }
+
+        return next();
     } catch (error) {
         throw new AppError("JWT Token inválido", 401);
     }
