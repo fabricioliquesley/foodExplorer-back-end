@@ -13,9 +13,19 @@ class MealsService {
 
         const meal_id = randomUUID();
 
-        await this.mealsRepository.create({meal_id, image_path, name, category, preco, description })
+        await this.mealsRepository.create({ meal_id, image_path, name, category, preco, description })
 
-        return {id: meal_id, image_path, name, category, ingredients, preco, description}
+        ingredients.map(async (ingredient) => {
+            const ingredient_id = randomUUID();
+
+            await this.mealsRepository.createIngredient({ ingredient_id, ingredient, meal_id });
+        })
+    }
+
+    async fetchMeals(search) {
+        const meals = await this.mealsRepository.fetchMeals(search);
+
+        return meals;
     }
 }
 
