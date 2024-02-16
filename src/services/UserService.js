@@ -16,12 +16,20 @@ class UserService {
 
         const hashPassword = await hash(password, 6);
 
+        function checkIfUserIsAdmin(email, password) {
+            if (email.includes("foodexplore") && password.includes("@admin")){
+                return "admin";
+            }
+
+            return "common";
+        }
+
         const data = {
             id: randomUUID(),
             name,
             email,
             password: hashPassword,
-            accountType: "admin",
+            accountType: checkIfUserIsAdmin(email, password),
         }
 
         const result = this.userRepository.createUser(data);
