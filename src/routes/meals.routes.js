@@ -9,5 +9,6 @@ const mealsController = new MealsController();
 mealsRoutes.use(ensureAuthenticated);
 
 mealsRoutes.post("/", mealsController.create);
+mealsRoutes.get("/", mealsController.index);
 
 module.exports = mealsRoutes;
