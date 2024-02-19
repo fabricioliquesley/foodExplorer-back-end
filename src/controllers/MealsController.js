@@ -23,6 +23,48 @@ class MealsController {
 
         response.status(200).json(meals);
     }
+
+    async show(request, response) {
+        const { meal_id } = request.params;
+
+        const mealsRepository = new MealsRepository();
+        const mealsService = new MealsService(mealsRepository);
+
+        const meal = await mealsService.fetchMeal(meal_id);
+
+        response.status(200).json(meal);
+    }
+
+    async update(request, response) {
+        const { meal_id } = request.params;
+        const { image_path, name, category, ingredients, preco, description } = request.body;
+
+        const mealsRepository = new MealsRepository();
+        const mealsService = new MealsService(mealsRepository);
+
+        const updatedMel = await mealsService.update({
+            meal_id,
+            image_path,
+            name,
+            category,
+            ingredients,
+            preco,
+            description
+        });
+
+        response.status(201).json(updatedMel);
+    }
+
+    async delete(request, response) {
+        const { meal_id } = request.params;
+
+        const mealsRepository = new MealsRepository();
+        const mealsService = new MealsService(mealsRepository);
+
+        const result = await mealsService.delete(meal_id)
+
+        response.status(200).json(result);
+    }
 }
 
 module.exports = MealsController;

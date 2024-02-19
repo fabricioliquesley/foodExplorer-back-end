@@ -1,4 +1,5 @@
 const knex = require("../database/knex");
+const AppError = require("../utils/AppError");
 
 class MealsRepository {
     async create({ meal_id, image_path, name, category, preco, description }) {
@@ -25,10 +26,10 @@ class MealsRepository {
 
         if (search) {
             meals = await knex("meals")
-                .whereLike("name" , `%${search}%`)
+                .whereLike("name", `%${search}%`)
                 .orderBy("name");
 
-            if (meals.length == 0){
+            if (meals.length == 0) {
                 meals = await knex("ingredients")
                     .select([
                         "meals.id",
@@ -64,6 +65,43 @@ class MealsRepository {
         })
 
         return mealsWithIngredients;
+    }
+
+    async fetchMeal(meal_id) {
+        const meal = await knex("meals").where("id", meal_id).first();
+
+        if (!meal) {
+            throw new AppError("Prato não encontrado")
+        }
+
+        const ingredients = await knex("ingredients").where("meal_id", meal_id);
+
+        return { ...meal, ingredients };
+    }
+
+    async updateMeal({
+        meal_id,
+        image_path,
+        name,
+        category,
+        preco,
+        description
+    }) {
+        return knex("meals").update({
+            name,
+            category,
+            image_path,
+            preco,
+            description
+        }).where("id", meal_id);
+    }
+
+    async updateIngredient(ingredients) {
+
+    }
+
+    async delete(meal_id) {
+        return await knex("meals").delete().where("id", meal_id);
     }
 }
 
