@@ -10,5 +10,8 @@ mealsRoutes.use(ensureAuthenticated);
 
 mealsRoutes.post("/", mealsController.create);
 mealsRoutes.get("/", mealsController.index);
+mealsRoutes.get("/:meal_id", mealsController.show);
+mealsRoutes.delete("/:meal_id", mealsController.delete);
+mealsRoutes.put("/:meal_id", mealsController.update);
 
 module.exports = mealsRoutes;
