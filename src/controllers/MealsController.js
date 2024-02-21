@@ -42,7 +42,7 @@ class MealsController {
         const mealsRepository = new MealsRepository();
         const mealsService = new MealsService(mealsRepository);
 
-        const updatedMel = await mealsService.update({
+        const status = await mealsService.update({
             meal_id,
             image_path,
             name,
@@ -52,7 +52,7 @@ class MealsController {
             description
         });
 
-        response.status(201).json(updatedMel);
+        response.status(201).json(status);
     }
 
     async delete(request, response) {

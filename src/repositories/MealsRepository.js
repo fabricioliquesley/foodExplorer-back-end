@@ -79,6 +79,10 @@ class MealsRepository {
         return { ...meal, ingredients };
     }
 
+    async fetchIngredients(meal_id) {
+        return knex("ingredients").where("meal_id", meal_id);
+    }
+    
     async updateMeal({
         meal_id,
         image_path,
@@ -96,13 +100,20 @@ class MealsRepository {
         }).where("id", meal_id);
     }
 
-    async updateIngredient(ingredients) {
 
+    async updateIngredient({oldValue, newValue, meal_id}) {
+        return await knex("ingredients").update({
+            name: newValue
+        }).where("name", oldValue).where("meal_id", meal_id);
     }
 
     async delete(meal_id) {
         return await knex("meals").delete().where("id", meal_id);
     }
+
+    async deleteIngredient({name, meal_id}) {
+        await knex("ingredients").delete().where("name", name).where("meal_id", meal_id);
+    }   
 }
 
 module.exports = MealsRepository;
