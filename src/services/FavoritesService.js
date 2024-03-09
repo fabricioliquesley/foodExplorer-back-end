@@ -1,4 +1,5 @@
 const { randomUUID } = require("node:crypto");
+const AppError = require("../utils/AppError");
 
 class FavoritesService {
     constructor(favoritesRepository) {
@@ -19,6 +20,20 @@ class FavoritesService {
 
     async getFavorites(user_id) {
         return await this.favoritesRepository.getFavorites(user_id);
+    }
+
+    async delete({ user_id, favorites_id }) {
+        const favorites = await this.favoritesRepository.getFavorites(user_id, favorites_id);
+
+        if (!favorites){
+            throw new AppError("Esse favorito não existe");
+        }
+
+        if (favorites.id !== user_id) {
+            throw new AppError("Esse favorito não pertence a esse usuário");
+        }
+
+        return await this.favoritesRepository.delete(favorites_id);
     }
 }
 

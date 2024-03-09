@@ -24,6 +24,18 @@ class FavoritesController {
 
         response.status(200).json(data);
     }
+
+    async delete(request, response) {
+        const user_id = request.user.id;
+        const {id: favorites_id} = request.params;
+
+        const favoritesRepository = new FavoritesRepository;
+        const favoritesService = new FavoritesService(favoritesRepository);
+
+        const data = await favoritesService.delete({user_id, favorites_id});
+
+        response.status(200).json(data);
+    }
 }
 
 module.exports = FavoritesController;
