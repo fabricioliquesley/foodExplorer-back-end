@@ -10,5 +10,6 @@ const ordersController = new OrdersController();
 
 ordersRoutes.post("/", ordersController.create);
 ordersRoutes.get("/", ordersController.fetchOrders);
+ordersRoutes.patch("/:id", ordersController.editOrder);
 
 module.exports = ordersRoutes;
