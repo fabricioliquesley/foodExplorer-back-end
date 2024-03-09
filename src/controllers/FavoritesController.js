@@ -13,6 +13,17 @@ class FavoritesController {
 
         response.status(201).json();
     }
+
+    async getFavorites(request, response) {
+        const user_id = request.user.id;
+
+        const favoritesRepository = new FavoritesRepository;
+        const favoritesService = new FavoritesService(favoritesRepository);
+
+        const data = await favoritesService.getFavorites(user_id);
+
+        response.status(200).json(data);
+    }
 }
 
 module.exports = FavoritesController;

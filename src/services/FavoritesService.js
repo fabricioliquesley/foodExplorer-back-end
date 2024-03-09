@@ -16,6 +16,10 @@ class FavoritesService {
 
         return await this.favoritesRepository.create(data);
     }
+
+    async getFavorites(user_id) {
+        return await this.favoritesRepository.getFavorites(user_id);
+    }
 }
 
 module.exports = FavoritesService;
