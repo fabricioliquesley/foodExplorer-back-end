@@ -24,6 +24,18 @@ class OrdersController {
 
         response.json(orders);
     }
+
+    async editOrder(request, response) {
+        const { status } = request.body;
+        const { id: orderId } = request.params;
+
+        const ordersRepository = new OrdersRepository();
+        const orderService = new OrdersService(ordersRepository);
+
+        await orderService.editOrder({ status, orderId });
+
+        response.status(200).send();
+    }
 }
 
 module.exports = OrdersController;

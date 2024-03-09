@@ -57,6 +57,10 @@ class OrdersService {
 
         return orders;
     }
+
+    async editOrder({ status, orderId }) {
+        return await this.ordersRepository.editOrder({ status, orderId });
+    }
 }
 
 module.exports = OrdersService;
