@@ -8,5 +8,6 @@ const favoritesController = new FavoritesController();
 
 favoritesRoutes.use(ensureAuthenticated);
 favoritesRoutes.post("/", favoritesController.create);
+favoritesRoutes.get("/", favoritesController.getFavorites)
 
 module.exports = favoritesRoutes;
