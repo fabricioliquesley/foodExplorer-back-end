@@ -7,14 +7,14 @@ class MealsService {
         this.mealsRepository = mealsRepository;
     }
 
-    async create({ image_path, name, category, ingredients, preco, description }) {
-        if (!image_path || !name || !category || !ingredients || !preco || !description) {
+    async create({ image_path, name, category, ingredients, price, description }) {
+        if (!image_path || !name || !category || !ingredients || !price || !description) {
             throw new AppError("Preencha todos os campos para cadastrar um novo prato");
         }
 
         const meal_id = randomUUID();
 
-        await this.mealsRepository.create({ meal_id, image_path, name, category, preco, description })
+        await this.mealsRepository.create({ meal_id, image_path, name, category, price, description })
 
         ingredients.map(async (ingredient) => {
             const ingredient_id = randomUUID();

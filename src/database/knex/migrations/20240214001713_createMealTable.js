@@ -3,7 +3,7 @@ exports.up = knex => knex.schema.createTable("meals", table => {
     table.text("name").notNullable();
     table.text("category").notNullable();
     table.text("image_path").default(null);
-    table.integer("preco").notNullable();
+    table.integer("price").notNullable();
     table.text("description").notNullable();
 });
 
