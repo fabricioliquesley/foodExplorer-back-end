@@ -29,7 +29,7 @@ class FavoritesService {
             throw new AppError("Esse favorito não existe");
         }
 
-        if (favorites.id !== user_id) {
+        if (favorites.user_id !== user_id) {
             throw new AppError("Esse favorito não pertence a esse usuário");
         }
 

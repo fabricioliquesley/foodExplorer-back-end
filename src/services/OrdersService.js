@@ -41,7 +41,7 @@ class OrdersService {
 
         const order = {
             id,
-            status: "pendente",
+            status: "Pendente",
             code: String(this.generateOrderCode()),
             details: detailsFormatted,
             user_id
