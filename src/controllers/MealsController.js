@@ -3,14 +3,14 @@ const MealsService = require("../services/MealsService");
 
 class MealsController {
     async create(request, response) {
-        const { image_path, name, category, ingredients, price, description } = request.body;
+        const { name, category, ingredients, price, description } = request.body;
 
         const mealsRepository = new MealsRepository();
         const mealsService = new MealsService(mealsRepository);
 
-        await mealsService.create({ image_path, name, category, ingredients, price, description });
+        const meal_id = await mealsService.create({ name, category, ingredients, price, description });
 
-        response.status(201).json();
+        response.status(201).json(meal_id);
     }
 
     async index(request, response) {
