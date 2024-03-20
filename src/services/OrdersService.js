@@ -53,7 +53,14 @@ class OrdersService {
     }
 
     async executeFetchOrders(user_id) {
-        const orders = await this.ordersRepository.fetchOrders(user_id);
+        const user = await this.ordersRepository.fetchUser(user_id);
+        let isUserAdmin = false;
+
+        if (user.accountType == "admin") {
+            isUserAdmin = true;
+        }
+
+        const orders = await this.ordersRepository.fetchOrders(user_id, isUserAdmin);
 
         return orders;
     }
