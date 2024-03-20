@@ -1,6 +1,7 @@
 const AppError = require("../utils/AppError");
 const { randomUUID } = require("crypto");
 const checkIfIsASimilarString = require("../utils/checkIfIsASimilarString");
+const DiskStorage = require("../providers/DiskStorage");
 
 class MealsService {
     constructor(mealsRepository) {
@@ -39,27 +40,24 @@ class MealsService {
 
     async update({
         meal_id,
-        image_path,
         name,
         category,
         ingredients,
-        preco,
+        price,
         description
     }) {
         const meal = await this.mealsRepository.fetchMeal(meal_id);
 
-        meal.image_path = image_path ?? meal.image_path;
         meal.name = name ?? meal.name;
         meal.category = category ?? meal.category;
-        meal.preco = preco ?? meal.preco;
+        meal.price = price ?? meal.price;
         meal.description = description ?? meal.description;
 
         const statusMeal = await this.mealsRepository.updateMeal({
             meal_id,
-            image_path,
             name,
             category,
-            preco,
+            price,
             description
         });
 
@@ -191,8 +189,8 @@ class MealsService {
                         isEqual = isEqual || reqIngredient.name === dbIngredient.name;
                     })
 
-                    if(!isEqual){
-                        ingredientsToCreate.push(reqIngredient.name);    
+                    if (!isEqual) {
+                        ingredientsToCreate.push(reqIngredient.name);
                     }
 
                     resultsOfIsEqual.push(isEqual);
@@ -203,22 +201,22 @@ class MealsService {
                     result = result && resultValue;
                 });
 
-                return {result, ingredientsToCreate}
+                return { result, ingredientsToCreate }
             }
 
-            const {result: hasIngredientsToCreate, ingredientsToCreate} = checkIngredientCreated(requestIngredients, mealIngredients)
+            const { result: hasIngredientsToCreate, ingredientsToCreate } = checkIngredientCreated(requestIngredients, mealIngredients)
 
             // console.log("Tem algum ingrediente novo? ", !hasIngredientsToCreate);
 
-            if(!hasIngredientsToCreate){
+            if (!hasIngredientsToCreate) {
                 // console.log("Lista de ingredientes para criar: ", ingredientsToCreate);
 
                 ingredientsToCreate.map(async hasIngredientToCreate => {
                     const ingredient_id = randomUUID();
-                    await this.mealsRepository.createIngredient({ 
-                        ingredient_id, 
-                        ingredient: hasIngredientToCreate, 
-                        meal_id 
+                    await this.mealsRepository.createIngredient({
+                        ingredient_id,
+                        ingredient: hasIngredientToCreate,
+                        meal_id
                     });
                 })
             }
@@ -232,6 +230,12 @@ class MealsService {
     }
 
     async delete(meal_id) {
+        const diskStorage = new DiskStorage();
+        
+        const { image_path } = await this.mealsRepository.fetchMeal(meal_id);
+
+        await diskStorage.deleteFile(image_path);
+
         const status = await this.mealsRepository.delete(meal_id);
 
         if (status) {

@@ -35,7 +35,7 @@ class MealsRepository {
                         "meals.name",
                         "meals.category",
                         "meals.image_path",
-                        "meals.preco",
+                        "meals.price",
                         "meals.description"
                     ])
                     .whereLike("ingredients.name", `%${search}%`)
@@ -84,17 +84,15 @@ class MealsRepository {
     
     async updateMeal({
         meal_id,
-        image_path,
         name,
         category,
-        preco,
+        price,
         description
     }) {
         return knex("meals").update({
             name,
             category,
-            image_path,
-            preco,
+            price,
             description
         }).where("id", meal_id);
     }

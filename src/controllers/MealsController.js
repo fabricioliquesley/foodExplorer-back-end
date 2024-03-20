@@ -37,18 +37,17 @@ class MealsController {
 
     async update(request, response) {
         const { meal_id } = request.params;
-        const { image_path, name, category, ingredients, preco, description } = request.body;
+        const { name, category, ingredients, price, description } = request.body;
 
         const mealsRepository = new MealsRepository();
         const mealsService = new MealsService(mealsRepository);
 
         const status = await mealsService.update({
             meal_id,
-            image_path,
             name,
             category,
             ingredients,
-            preco,
+            price,
             description
         });
 
