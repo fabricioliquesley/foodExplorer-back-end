@@ -1,3 +1,4 @@
 node_modules
 .env
 datbase.db
+uploads
